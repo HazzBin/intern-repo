@@ -58,25 +58,22 @@ def password_strength_checker():
         recommendations.append("Password is moderate. Consider implementing some of suggestions")
     elif len(recommendations) >= 4:
         recommendations.append("Password is weak. Please consider changing it.")
+    
+    print("\n".join(recommendations) + "\n")
+    password_search("10k-most-common.txt", user_password)
+     
 
-    check_password_in_zip("rockyou.txt.zip", user_password)
+def password_search(file_path, user_password):
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read() 
+        if user_password in content:
+            print(f"'{user_password}' is one of the top 10k most commonly used passwords in the world. Change your password immediately!")
 
-    return print("\n".join(recommendations) + "\n")
-
-def check_password_in_zip(zip_path, user_password):
-    with zipfile.ZipFile(zip_path, 'r') as z:
-        file_name = z.namelist()[0]  # Get the first (and only) file inside the ZIP
-        
-        with z.open(file_name) as f:
-            content = f.read().decode('utf-8')  # Read and decode the text file
-            
-            if user_password in content:
-                return f"Password found in '{file_name}'!"
-            else:
-                return "Password NOT found in the file."
 
 
         
 while True:
     main()
-    
+    again = input("Would you like to use another tool? Yes[Y] / No[N]: ")
+    if again.lower() == "no" or again.lower() == "n":
+        break
